@@ -1,4 +1,4 @@
-import MyGame from '/MyGame.js'
+import MyGame from '/classes/MyGame.js'
 
 const myGame = new MyGame(1280,60)
 
