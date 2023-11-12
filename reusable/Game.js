@@ -1,8 +1,9 @@
 export default class Game{
-    constructor(widthResolution, fps){
+    constructor(widthResolution, fps, tilesize){
         this.width = widthResolution
         this.height = widthResolution * 9 /16
         this.fps = fps
+        this.tilesize = tilesize
         this.msPerFrame = 1000 / fps
         this.msPrev = window.performance.now()
 
@@ -11,6 +12,8 @@ export default class Game{
             canvas.width = this.width
             canvas.height = this.height
         });
+
+        this.init()
 
         requestAnimationFrame(()=>this.frameUpdate());
     }
@@ -31,5 +34,9 @@ export default class Game{
 
     main(){
         //A override dans une fonction main d'une classe "non reusable"
+    }
+
+    init(){
+        
     }
 }
