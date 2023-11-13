@@ -1,5 +1,5 @@
 import Game from "../reusable/Game.js"
-import Tile from "/reusable/Tile.js"
+import Tile from "../reusable/Tile.js"
 
 import Player from "/classes/Player.js"
 
