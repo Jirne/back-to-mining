@@ -65,7 +65,7 @@ export default class Entity {
     isCollidingWith(object1, object2) {
         return (object1.coordinates.x + object1.coordinates.w > object2.coordinates.x &&
             object1.coordinates.x < object2.coordinates.x + object2.coordinates.w &&
-            object1.coordinates.y + object2.coordinates.h > object2.coordinates.y &&
-            object1.coordinates.y < object2.coordinates.y + object1.coordinates.h)
+            object1.coordinates.y + object1.coordinates.h > object2.coordinates.y &&
+            object1.coordinates.y < object2.coordinates.y + object2.coordinates.h)
     }
 }

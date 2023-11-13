@@ -2,14 +2,26 @@ import Entity from "../reusable/Entity.js"
 
 export default class Player extends Entity {
 
-    GROUND_SPEED = 300 //pixel/sec
-    GRAVITY = 200
+
+    constructor({ coordinates, orientation, image, backgroundColor, layer, groundSpeed, jumpHeight, jumpLength }) {
+        super({ coordinates: coordinates, orientation: orientation, image: image, backgroundColor: backgroundColor, layer: layer })
+
+        this.groundSpeed = groundSpeed
+        this.jumpHeight = jumpHeight
+        this.jumpLength = jumpLength
+
+        this.gravity = 2 * jumpHeight * Math.pow(groundSpeed, 2) / Math.pow(jumpLength, 2)
+        this.jumpSpeed = - 2 * jumpHeight * groundSpeed / jumpLength
+    }
+
+
     update(game) {
-        const dt = game.msPerFrame
+        const dt = game.msPerFrame / 1000
 
         //Calculate hypotetical movements
-        const dx = this.coordinates.vx * dt / 1000
-        const dy = this.GRAVITY * dt / 1000
+        const dx = this.coordinates.vx * dt
+        const dy = this.gravity * Math.pow(dt, 2) + this.coordinates.vy * dt
+        const dvy = this.gravity * dt
 
         if (!this.isCollidingWithList({
             ...this, coordinates: {
@@ -22,8 +34,20 @@ export default class Player extends Entity {
             this.coordinates.x += dx
         }
 
-        if (!this.isGrounded(game.colliders, dy))
+        if (!this.isCollidingWithList({
+            ...this, coordinates: {
+                x: this.coordinates.x,
+                y: this.coordinates.y + dy,
+                w: this.coordinates.w,
+                h: this.coordinates.h
+            }
+        }, game.colliders)) {
             this.coordinates.y += dy
+            this.coordinates.vy += dvy
+        }
+        else{
+            this.coordinates.vy = 0
+        }
 
     }
 

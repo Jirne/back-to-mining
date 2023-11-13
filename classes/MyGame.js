@@ -70,13 +70,16 @@ export default class MyGame extends Game {
         this.player = new Player({
             coordinates: {
                 x: 2 * this.tilesize,
-                y: this.height - (this.tilesize * 2 * 1.5 + this.tilesize),
+                y: this.height - (this.tilesize * 2 * 1.5 + this.tilesize) - 50,
                 w: this.tilesize * 2,
                 h: this.tilesize * 2 * 1.5
             },
             orientation: Player.Direction.DOWN,
             backgroundColor: "green",
-            layer: "playground"
+            layer: "playground",
+            jumpHeight: 7 * this.tilesize,
+            jumpLength: 4 * tilesize,
+            groundSpeed: 300
         })
 
         
@@ -105,11 +108,24 @@ export default class MyGame extends Game {
         window.addEventListener("keydown", (e) => {
             switch (e.key) {
                 case "q":
-                    this.player.coordinates.vx = -this.player.GROUND_SPEED;
+                    this.player.coordinates.vx = -this.player.groundSpeed;
                     break
 
                 case "d":
-                    this.player.coordinates.vx = this.player.GROUND_SPEED
+                    this.player.coordinates.vx = this.player.groundSpeed
+                    break
+
+                case " ":
+                    if(!this.player.isCollidingWithList({
+                        ...this.player, coordinates: {
+                            x: this.player.coordinates.x,
+                            y: this.player.coordinates.y,
+                            w: this.player.coordinates.w,
+                            h: this.player.coordinates.h
+                        }
+                    }, this.colliders) && this.player.coordinates.vy == 0){
+                        this.player.coordinates.vy = this.player.jumpSpeed
+                    }
                     break
             }
         })
