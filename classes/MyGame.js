@@ -1,6 +1,6 @@
-import Game from './reusable/Game.js'
+import Game from '../reusable/Game.js'
 import Player from './Player.js'
-import Tile from './reusable/Tile.js'
+import Tile from '../reusable/Tile.js'
 
 export default class MyGame extends Game {
 
