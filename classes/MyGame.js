@@ -1,6 +1,7 @@
 import Entity from "../reusable/Entity.js"
 import Game from "../reusable/Game.js"
 import Tile from "../reusable/Tile.js"
+import Camera from "../reusable/Camera.js"
 
 import Player from "./Player.js"
 
@@ -55,12 +56,49 @@ export default class MyGame extends Game {
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ]
 
-
-
     main() {
         const c = document.getElementById("playground").getContext("2d")
         c.clearRect(0, 0, c.canvas.width, c.canvas.height)
+
+        const movement = this.player.calculateMove(this)
+        const futurCoordinates = {
+            x: this.player.coordinates.x + movement.x,
+            y: this.player.coordinates.y + movement.y,
+            w: this.player.coordinates.w,
+            h: this.player.coordinates.h
+        }
+        if(this.camera.isPlayerInside(futurCoordinates)){
+            //On applique le mouvement au joueur
+            this.player.coordinates.x += movement.x
+            this.player.coordinates.y += movement.y
+            this.player.coordinates.vy += movement.vy
+            this.player.coordinates.vx += movement.vx
+        }
+        else{
+            //On applique l'inverse du mouvement au background et la camera
+
+            if(this.camera.coordinates.y < 0 || this.camera.coordinates.y + this.camera.coordinates.h > this.height){
+                this.player.coordinates.vy += movement.vy
+                this.player.coordinates.y += movement.y
+            }
+            else
+            this.camera.coordinates.y -= movement.y
+
+            
+
+            if(this.camera.coordinates.x < 0 || this.camera.coordinates.x + this.camera.coordinates.w > this.width){
+                this.player.coordinates.x += movement.x
+                this.player.coordinates.vx += movement.vx
+            }
+            else
+                this.camera.coordinates.x -= movement.x
+
+
+        }
+
+        
         this.player.draw(this)
+        this.camera.draw()
 
     }
 
@@ -82,6 +120,16 @@ export default class MyGame extends Game {
             jumpLength: 4 * tilesize,
             groundSpeed: 300
         })
+
+        this.camera = new Camera({
+            coordinates:{
+                x:200,
+                y:0,
+                w: 800,
+                h: 720
+            }
+        })
+        this.camera.draw()
 
         
         this.colliders = []
