@@ -18,7 +18,9 @@ export default class Game{
             new Promise(resolve => {
               const img = new Image();
               img.onerror = e => console.log(`${url} failed to load`);
-              img.onload = e => resolve(img);
+              img.onload = e => {
+                console.log(`${url} loaded`)
+                resolve(img)};
               img.src = '/assets/'+url;
               this.assets[url.slice(0,url.length - 4)] = img
             })
@@ -27,14 +29,9 @@ export default class Game{
 
         Promise
         .all(assetsLoaded)
-        .then(images => {
-            requestAnimationFrame(()=>this.frameUpdate());
-        })
-        .catch(err => console.error(err))
-;
-
-
-        
+        .then(() => {this.init()})
+        .then(() => {this.init(window.requestAnimationFrame(()=>this.frameUpdate()))})
+        .catch(err => console.error(err));        
     }
 
     frameUpdate() {
