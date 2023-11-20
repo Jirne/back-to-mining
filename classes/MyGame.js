@@ -64,7 +64,6 @@ export default class MyGame extends Game {
         }
 
         this.player.draw(this)
-
     }
 
 
@@ -92,7 +91,6 @@ export default class MyGame extends Game {
                 h: this.height / 2
             }
         })
-        this.camera.draw()
 
         const map = [
             [ 5,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  6],
@@ -161,13 +159,10 @@ export default class MyGame extends Game {
                         layer: "background",
                         frame: tile
                     }))
+                    this.colliders[this.colliders.length - 1 ].draw();
                 }
             }
         }
-
-        this.colliders.forEach(element => {
-            element.draw()
-        });
 
         window.addEventListener("keydown", (e) => {
             switch (e.key) {
