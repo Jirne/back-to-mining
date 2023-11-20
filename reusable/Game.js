@@ -1,11 +1,12 @@
 export default class Game{
-    constructor(widthResolution, fps, tilesize){
+    constructor(widthResolution, fps, tilesize, assets){
         this.width = widthResolution
         this.height = widthResolution * 9 /16
         this.fps = fps
         this.tilesize = tilesize
         this.msPerFrame = 1000 / fps
         this.msPrev = window.performance.now()
+        this.assets = []
 
         const arrayCanvas = Array.prototype.slice.call(document.getElementsByTagName('canvas'))
         arrayCanvas.forEach(canvas => {
@@ -13,9 +14,24 @@ export default class Game{
             canvas.height = this.height
         });
 
-        this.init()
+        const assetsLoaded = assets.map(url =>
+            new Promise(resolve => {
+              const img = new Image();
+              img.onerror = e => console.log(`${url} failed to load`);
+              img.onload = e => {
+                console.log(`${url} loaded`)
+                resolve(img)};
+              img.src = '/assets/'+url;
+              this.assets[url.slice(0,url.length - 4)] = img
+            })
+          );
 
-        requestAnimationFrame(()=>this.frameUpdate());
+
+        Promise
+        .all(assetsLoaded)
+        .then(() => {this.init()})
+        .then(() => {this.init(window.requestAnimationFrame(()=>this.frameUpdate()))})
+        .catch(err => console.error(err));        
     }
 
     frameUpdate() {

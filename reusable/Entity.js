@@ -19,20 +19,22 @@ export default class Entity {
         }
     })
 
-    constructor({ coordinates, orientation, image, backgroundColor, layer }) {
+    constructor({ coordinates, orientation, image, backgroundColor, layer, frame }) {
         this.coordinates = coordinates
         this.coordinates.vx = 0
         this.coordinates.vy = 0
         this.orientation = orientation
         this.layer = layer
+        this.frame = frame
 
-        let img = new Image()
         if (image != null) {
-            img.src = image
+            this.image = image
         }
-
-        img.style.backgroundColor = backgroundColor
-        this.image = img
+        else{
+            let img = new Image
+            img.style.backgroundColor = backgroundColor
+            this.image = img
+        }
     }
 
 
@@ -44,7 +46,10 @@ export default class Entity {
             c.fillRect(this.coordinates.x, this.coordinates.y, this.coordinates.w, this.coordinates.h)
         }
         else {
-            c.drawImage(this.image, this.coordinates.x, this.coordinates.y)
+                if (this.frame == null)
+                    c.drawImage(this.image, this.coordinates.x, this.coordinates.y)
+                else
+                    c.drawImage(this.image, this.frame*this.coordinates.w, 0, this.coordinates.w, this.coordinates.h, this.coordinates.x, this.coordinates.y, this.coordinates.w, this.coordinates.h)
         }
     }
 
@@ -55,7 +60,7 @@ export default class Entity {
     isCollidingWithList(object1, objects) {
         for (let index = 0; index < objects.length; index++) {
             const object2 = objects[index];
-             if(this.isCollidingWith(object1, object2))
+            if (this.isCollidingWith(object1, object2))
                 return true
         }
         return false
