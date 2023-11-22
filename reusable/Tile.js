@@ -1,6 +1,6 @@
-import Entity from "./Entity.js";
+import { Entity } from "#root/reusable/Entity.js";
 
-export default class Tile extends Entity{
+export class Tile extends Entity{
 
     draw(){
         super.draw()

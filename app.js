@@ -1,14 +1,32 @@
-const http = require('node:http');
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+require('dotenv').config()
+const fs = require('fs')
 
-const hostname = '127.0.0.1';
-const port = 3000;
+import { MyGame } from "#root/classes/MyGame.js";
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello, World!\n');
+const hostname = '127.0.0.1'
+const port = 8080
+
+require('http').createServer((req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/html'})
+
+  fs.readFile('./index.html', null, function (error, data) {
+    if (error) {
+      res.writeHead(404);
+      res.write('Whoops! File not found!');
+    } else {
+      res.write(data);
+
+      new MyGame(1280,60,16,[
+        'TileSet.png'
+    ])
+    }
+    res.end();
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-}); 
+
+
+}).listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`)
+})

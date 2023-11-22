@@ -1,11 +1,11 @@
-import Entity from "../reusable/Entity.js"
-import Game from "../reusable/Game.js"
-import Tile from "../reusable/Tile.js"
-import Camera from "../reusable/Camera.js"
+import { Entity } from "#root/reusable/Entity.js";
+import { Game } from "#root/reusable/Game.js";
+import { Tile } from "#root/reusable/Tile.js";
+import { Camera } from "#root/reusable/Camera.js";
 
-import Player from "./Player.js"
+import { Player } from "#root/classes/Player.js";
 
-export default class MyGame extends Game {
+export class MyGame extends Game {
 
     constructor(widthResolution, fps, tilesize, assets) {
         super(widthResolution, fps, tilesize, assets)

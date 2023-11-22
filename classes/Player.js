@@ -1,6 +1,6 @@
-import Entity from "../reusable/Entity.js"
+import { Entity } from "#root/reusable/Entity.js";
 
-export default class Player extends Entity {
+export class Player extends Entity {
 
 
     constructor({ coordinates, orientation, image, backgroundColor, layer, groundSpeed, jumpHeight, jumpLength }) {

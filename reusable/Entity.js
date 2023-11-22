@@ -1,4 +1,4 @@
-export default class Entity {
+export class Entity {
 
     static Direction = Object.freeze({
         UP: {

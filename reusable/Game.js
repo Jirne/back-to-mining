@@ -1,11 +1,11 @@
-export default class Game{
+export class Game{
     constructor(widthResolution, fps, tilesize, assets){
         this.width = widthResolution
         this.height = widthResolution * 9 /16
         this.fps = fps
         this.tilesize = tilesize
         this.msPerFrame = 1000 / fps
-        this.msPrev = window.performance.now()
+        this.msPrev = performance.now()
         this.assets = []
 
         const arrayCanvas = Array.prototype.slice.call(document.getElementsByTagName('canvas'))
@@ -39,7 +39,7 @@ export default class Game{
 
         this.main()
     
-        const msNow = window.performance.now()
+        const msNow = performance.now()
         const msPassed = msNow - this.msPrev
       
         if (msPassed < this.msPerFrame) return

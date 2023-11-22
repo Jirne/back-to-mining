@@ -1,9 +1,32 @@
 {
   "name": "back-to-mining",
   "version": "0.0.1",
-  "description": "",
+  "lockfileVersion": 3,
+  "requires": true,
   "main": "app.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "type": "module",
+  "imports": {
+    "#root/*.js": "./*.js"
+  },
+  "packages": {
+    "": {
+      "name": "back-to-mining",
+      "version": "0.0.1",
+      "license": "ISC",
+      "dependencies": {
+        "dotenv": "^16.3.1"
+      }
+    },
+    "node_modules/dotenv": {
+      "version": "16.3.1",
+      "resolved": "https://registry.npmjs.org/dotenv/-/dotenv-16.3.1.tgz",
+      "integrity": "sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==",
+      "engines": {
+        "node": ">=12"
+      },
+      "funding": {
+        "url": "https://github.com/motdotla/dotenv?sponsor=1"
+      }
+    }
+  }
 }
