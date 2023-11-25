@@ -38,8 +38,8 @@ export default class Entity {
     }
 
 
-    draw(game) {
-        this.update(game)
+    draw() {
+        this.update()
         const c = document.getElementById(this.layer).getContext("2d")
         if (this.image.src == "") {
             c.fillStyle = this.image.style.backgroundColor
@@ -61,16 +61,20 @@ export default class Entity {
         for (let index = 0; index < objects.length; index++) {
             const object2 = objects[index];
             if (this.isCollidingWith(object1, object2))
-                return true
+                return object2
         }
         return false
     }
 
 
     isCollidingWith(object1, object2) {
-        return (object1.coordinates.x + object1.coordinates.w > object2.coordinates.x &&
+        if (object1.coordinates.x + object1.coordinates.w > object2.coordinates.x &&
             object1.coordinates.x < object2.coordinates.x + object2.coordinates.w &&
             object1.coordinates.y + object1.coordinates.h > object2.coordinates.y &&
-            object1.coordinates.y < object2.coordinates.y + object2.coordinates.h)
+            object1.coordinates.y < object2.coordinates.y + object2.coordinates.h){
+                return object2
+            }
+            else
+                false
     }
 }
