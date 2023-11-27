@@ -21,7 +21,7 @@ export default class Game{
               img.onload = e => {
                 console.log(`${url} loaded`)
                 resolve(img)};
-              img.src = '/assets/'+url;
+              img.src = '/back-to-mining/assets/'+url;
               this.assets[url.slice(0,url.length - 4)] = img
             })
           );
