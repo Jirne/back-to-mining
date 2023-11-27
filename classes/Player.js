@@ -12,17 +12,34 @@ export default class Player extends Entity {
 
         this.gravity = 2 * jumpHeight * Math.pow(groundSpeed, 2) / Math.pow(jumpLength, 2)
         this.jumpSpeed = - 2 * jumpHeight * groundSpeed / jumpLength
+
+
+        this.attacking = 0
+        this.weapon = new Entity({
+            coordinates: {
+                x: this.coordinates.x + this.coordinates.w,
+                y: this.coordinates.y,
+                w: this.coordinates.w /2,
+                h: this.coordinates.h
+            },
+            orientation: Entity.Direction.DOWN,
+            backgroundColor: "red",
+            layer: "playground"
+        })
     }
 
 
     update(game) {
-        
-/*         let m = this.calculateMove(game)
-        this.coordinates.x += m.x
-        this.coordinates.y += m.y    
-        this.coordinates.vy += m.vy
-        //this.coordinates.vx += m.vx
- */
+        if(this.attacking > 0){
+            this.attacking--
+            this.weapon.coordinates.y = this.coordinates.y
+            if(this.coordinates.vx >= 0){
+                this.weapon.coordinates.x = this.coordinates.x + this.coordinates.w
+            }
+            else{
+                this.weapon.coordinates.x = this.coordinates.x - this.weapon.coordinates.w
+            }
+        }
     }
 
 
@@ -41,46 +58,57 @@ export default class Player extends Entity {
             vy: dvy
         }
 
-        if (this.isCollidingWithList({
+        let collided = this.isCollidingWithList({
             ...this, coordinates: {
                 x: this.coordinates.x + dx,
                 y: this.coordinates.y,
                 w: this.coordinates.w,
                 h: this.coordinates.h
             }
-        }, game.colliders)) {
+        }, game.colliders)
+
+
+        if (collided != false) {
             movement.x = 0
+            if(dx > 0)
+                movement.x = dx - ( this.coordinates.x + this.coordinates.w + dx - collided.coordinates.x)
+            else
+                movement.x = dx - ( this.coordinates.x + dx - collided.coordinates.x - collided.coordinates.w)
+            
         }
 
-        if (this.isCollidingWithList({
+
+        collided = this.isCollidingWithList({
             ...this, coordinates: {
                 x: this.coordinates.x,
                 y: this.coordinates.y + dy,
                 w: this.coordinates.w,
                 h: this.coordinates.h
             }
-        }, game.colliders)) {
-            this.coordinates.vy = 0
+        }, game.colliders)
+        if (collided != false) {
             movement.vy = 0
-            movement.y = 0
-        }
-        else{
-            movement.y = dy
-            movement.vy = dvy
+            this.coordinates.vy= 0 
+            if(dy > 0)
+                movement.y = dy - ( this.coordinates.y + this.coordinates.h + dy - collided.coordinates.y)
+            else
+                movement.y = dy - ( this.coordinates.y + dy - collided.coordinates.y - collided.coordinates.h)
         }
 
 
         return movement
     }
 
+    attack(){
+        if(this.attacking == 0){
+            this.attacking = 60
+        }
+    }
 
-    isGrounded(colliders, dy) {
-        for (let i = 0; i < colliders.length; i++) {
-            const element = colliders[i];
-            if (colliders[i].coordinates.y < this.coordinates.y + this.coordinates.h + dy)
-                return true
-            else
-                return false
+    draw(){
+        super.draw()
+        if(this.attacking > 0){
+            this.weapon.draw()
         }
     }
 }

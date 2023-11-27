@@ -164,6 +164,21 @@ export default class MyGame extends Game {
             }
         }
 
+        window.addEventListener("mousedown", (e) =>{
+            switch(e.button){
+                //leftclic
+                case 0:
+                    this.player.attack()
+                break;
+
+                case 2:
+                break;
+            }
+
+
+
+        })
+
         window.addEventListener("keydown", (e) => {
             switch (e.key) {
                 case "q":
