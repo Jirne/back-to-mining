@@ -23,7 +23,10 @@ export default class Entity {
         this.coordinates = coordinates
         this.coordinates.vx = 0
         this.coordinates.vy = 0
-        this.orientation = orientation
+        if(orientation != null)
+            this.orientation = orientation
+        else
+            this.orientation = Entity.Direction.DOWN
         this.layer = layer
         this.frame = frame
 
@@ -53,7 +56,7 @@ export default class Entity {
         }
     }
 
-    update(game) {
+    update() {
         //by default: do nothing
     }
 
