@@ -21,8 +21,6 @@ export default class Entity {
 
     constructor({ coordinates, orientation, image, backgroundColor, layer, frame }) {
         this.coordinates = coordinates
-        this.coordinates.vx = 0
-        this.coordinates.vy = 0
         if(orientation != null)
             this.orientation = orientation
         else

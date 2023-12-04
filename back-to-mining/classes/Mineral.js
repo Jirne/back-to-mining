@@ -14,7 +14,7 @@ export default class Mineral extends Entity {
     })
 
     constructor({ coordinates, image, backgroundColor, layer, frame, depth }) {
-        super(coordinates, null, image, backgroundColor, layer, frame)
+        super({ coordinates: coordinates, orientation: null, image: image, backgroundColor: backgroundColor, layer: layer, frame: null })
         if (depth == 0) {
             this.type = Mineral.Type.IRON
         }
@@ -26,8 +26,14 @@ export default class Mineral extends Entity {
         this.hp = this.type.hp
     }
 
+    
+    draw(player){
+        this.update(player)
+        super.draw()
+    }
+
     update(player) {
-        if (player.attacking > 0 && this.isCollidingWith(player.weapon) && this.hp > 0) {
+        if (player.attacking > 0 && this.isCollidingWith(this, player.weapon) && this.hp > 0) {
             this.hp--
             if (this.hp < 0)
                 this.hp = 0

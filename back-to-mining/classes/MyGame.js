@@ -34,9 +34,8 @@ export default class MyGame extends Game {
         }
         else {
             updateBackground = true
-            this.colliders.forEach(element => {
+            this.gameObjects.forEach(element => {
                 element.coordinates.x = Math.round(element.coordinates.x - movement.x)
-                element.draw()
             });
         }
 
@@ -51,7 +50,7 @@ export default class MyGame extends Game {
         }
         else {
             updateBackground = true
-            this.colliders.forEach(element => {
+            this.gameObjects.forEach(element => {
                 element.coordinates.y -= movement.y
             });
         }
@@ -59,8 +58,8 @@ export default class MyGame extends Game {
 
         if (updateBackground) {
             bc.clearRect(0, 0, c.canvas.width, c.canvas.height)
-            this.colliders.forEach(element => {
-                element.draw()
+            this.gameObjects.forEach(element => {
+                element.draw(this.player)
             });
         }
 
@@ -74,7 +73,9 @@ export default class MyGame extends Game {
                 x: this.width / 6 + 5,
                 y: this.height - (this.tilesize * 2 * 1.5 + this.tilesize) - 50,
                 w: this.tilesize * 2,
-                h: this.tilesize * 2 * 1.5
+                h: this.tilesize * 2 * 1.5,
+                vx:0,
+                vy: 0
             },
             orientation: Player.Direction.DOWN,
             backgroundColor: "green",
@@ -141,10 +142,9 @@ export default class MyGame extends Game {
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ]
 
-        this.colliders = []
-        this.minerals = []
+        this.gameObjects = []
 
-        this.minerals.push(new Mineral({
+        this.gameObjects.push(new Mineral({
             coordinates: {
                 x: this.width / 6 + 5 + 400,
                 y: this.height - (this.tilesize * 2 * 1.5 + this.tilesize) - 50,
@@ -154,6 +154,7 @@ export default class MyGame extends Game {
             layer: "playground",
             depth: 0
         }))
+        this.gameObjects[this.gameObjects.length - 1].draw(this.player);
 
 
         for (let i = 0; i < map.length; i++) {
@@ -161,7 +162,7 @@ export default class MyGame extends Game {
                 const tile = map[i][j];
 
                 if (tile >= 1) {
-                    this.colliders.push(new Tile({
+                    this.gameObjects.push(new Tile({
                         coordinates: {
                             x: j * this.tilesize,
                             y: i * this.tilesize,
@@ -173,7 +174,7 @@ export default class MyGame extends Game {
                         layer: "background",
                         frame: tile
                     }))
-                    this.colliders[this.colliders.length - 1].draw();
+                    this.gameObjects[this.gameObjects.length - 1].draw(this.player);
                 }
             }
         }
@@ -188,9 +189,6 @@ export default class MyGame extends Game {
                 case 2:
                     break;
             }
-
-
-
         })
 
         window.addEventListener("keydown", (e) => {
@@ -211,7 +209,7 @@ export default class MyGame extends Game {
                             w: this.player.coordinates.w,
                             h: this.player.coordinates.h
                         }
-                    }, this.colliders) && this.player.coordinates.vy == 0) {
+                    }, this.gameObjects) && this.player.coordinates.vy == 0) {
                         this.player.coordinates.vy = this.player.jumpSpeed
                     }
                     break

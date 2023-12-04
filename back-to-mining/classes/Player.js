@@ -65,7 +65,7 @@ export default class Player extends Entity {
                 w: this.coordinates.w,
                 h: this.coordinates.h
             }
-        }, game.colliders)
+        }, game.gameObjects)
 
 
         if (collided != false) {
@@ -85,7 +85,7 @@ export default class Player extends Entity {
                 w: this.coordinates.w,
                 h: this.coordinates.h
             }
-        }, game.colliders)
+        }, game.gameObjects)
         if (collided != false) {
             movement.vy = 0
             this.coordinates.vy= 0 
