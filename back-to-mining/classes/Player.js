@@ -105,10 +105,10 @@ export default class Player extends Entity {
         }
     }
 
-    draw(){
-        super.draw()
+    draw(game){
+        super.draw(game)
         if(this.attacking > 0){
-            this.weapon.draw()
+            this.weapon.draw(game)
         }
     }
 }

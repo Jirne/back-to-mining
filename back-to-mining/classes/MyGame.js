@@ -56,13 +56,15 @@ export default class MyGame extends Game {
         }
 
 
-        if (updateBackground) {
-            bc.clearRect(0, 0, c.canvas.width, c.canvas.height)
-            this.gameObjects.forEach(element => {
-                element.draw(this.player)
-            });
-        }
-
+        this.gameObjects.forEach(element => {
+            if (updateBackground) {
+                bc.clearRect(0, 0, c.canvas.width, c.canvas.height)
+                element.draw(this)
+            }
+            else if(element.constructor.name){
+                element.update(this)
+            }
+        });
         this.player.draw(this)
     }
 
@@ -143,18 +145,17 @@ export default class MyGame extends Game {
         ]
 
         this.gameObjects = []
-
         this.gameObjects.push(new Mineral({
             coordinates: {
                 x: this.width / 6 + 5 + 400,
                 y: this.height - (this.tilesize * 2 * 1.5 + this.tilesize) - 50,
-                w: this.tilesize * 2,
-                h: this.tilesize
+                w: this.tilesize,
+                h: this.tilesize * 2
             },
-            layer: "playground",
+            layer: "background",
             depth: 0
         }))
-        this.gameObjects[this.gameObjects.length - 1].draw(this.player);
+        this.gameObjects[this.gameObjects.length - 1].draw(this);
 
 
         for (let i = 0; i < map.length; i++) {
@@ -174,7 +175,7 @@ export default class MyGame extends Game {
                         layer: "background",
                         frame: tile
                     }))
-                    this.gameObjects[this.gameObjects.length - 1].draw(this.player);
+                    this.gameObjects[this.gameObjects.length - 1].draw(this);
                 }
             }
         }

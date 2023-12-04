@@ -5,11 +5,11 @@ export default class Mineral extends Entity {
     static Type = Object.freeze({
         COPPER: {
             hp: 1,
-            color: 'BA763C'
+            color: '#BA763C'
         },
         IRON: {
             hp: 2,
-            color: '434341'
+            color: '#434341'
         }
     })
 
@@ -22,24 +22,20 @@ export default class Mineral extends Entity {
 
         }
 
-        this.backgroundColor = '#' + this.type.color
+        this.backgroundColor = this.type.color
         this.hp = this.type.hp
     }
 
-    
-    draw(player){
-        this.update(player)
-        super.draw()
-    }
 
-    update(player) {
-        if (player.attacking > 0 && this.isCollidingWith(this, player.weapon) && this.hp > 0) {
+    update(game) {
+        this.isCollidingWith(this, game.player.weapon)
+        if (game.player.attacking > 0 && this.isCollidingWith(this, game.player.weapon) && this.hp > 0) {
             this.hp--
             if (this.hp < 0)
                 this.hp = 0
             if (!this.hp) {
                 this.img.opacity = 0
-                this.dropOre(player)
+                this.dropOre(game.player)
             }
         }
     }

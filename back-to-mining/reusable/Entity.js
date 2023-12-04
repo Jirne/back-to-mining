@@ -39,8 +39,8 @@ export default class Entity {
     }
 
 
-    draw() {
-        this.update()
+    draw(game) {
+        this.update(game)
         const c = document.getElementById(this.layer).getContext("2d")
         if (this.image.src == "") {
             c.fillStyle = this.image.style.backgroundColor
@@ -54,7 +54,7 @@ export default class Entity {
         }
     }
 
-    update() {
+    update(game) {
         //by default: do nothing
     }
 
