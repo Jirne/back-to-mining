@@ -1,21 +1,21 @@
 import { Entity } from "../reusable/Entity.js"
-import { Game } from "../reusable/Game.js"
+import { Game } from "../reusable/Game.ts"
 import { Tile } from "../reusable/Tile.js"
 import { Camera } from "../reusable/Camera.js";
 
 import { Player } from "../classes/Player.js"
 import { Mineral } from "../classes/Mineral.js"
 
-
 export class MyGame extends Game {
 
-    constructor(widthResolution, fps, tilesize, assets) {
-        super(widthResolution, fps, tilesize, assets)
+    constructor(widthResolution, fps, tilesize, assets, arrayCanvas) {
+        super(widthResolution, fps, tilesize, assets, arrayCanvas)
+
     }
 
     main() {
-        const c = document.getElementById("playground").getContext("2d")
-        const bc = document.getElementById("background").getContext("2d")
+        const c = MyGame.context["playground"]
+        const bc = MyGame.context["background"]
 
         let updateBackground = false;
 

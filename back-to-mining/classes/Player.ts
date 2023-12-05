@@ -2,9 +2,19 @@ import { Entity } from "../reusable/Entity.js"
 
 export class Player extends Entity {
 
+    groundSpeed: number
+    jumpHeight: number
+    jumpLength: number
+
+    gravity: number
+    jumpSpeed: number
+    attacking: number
+    weapon: Entity
 
     constructor({ coordinates, orientation, image, backgroundColor, layer, groundSpeed, jumpHeight, jumpLength }) {
-        super({ coordinates: coordinates, orientation: orientation, image: image, backgroundColor: backgroundColor, layer: layer })
+        super({ coordinates: coordinates, orientation: orientation, image: image, backgroundColor: backgroundColor, layer: layer, frame: null })
+        this.coordinates.vy = 0
+        this.coordinates.vx = 0
 
         this.groundSpeed = groundSpeed
         this.jumpHeight = jumpHeight
@@ -24,12 +34,14 @@ export class Player extends Entity {
             },
             orientation: Entity.Direction.DOWN,
             backgroundColor: "red",
-            layer: "playground"
+            layer: "playground",
+            image: null,
+            frame: null
         })
     }
 
 
-    update(game) {
+    update(game: this) {
         if (this.attacking > 0) {
             this.attacking--
             this.weapon.coordinates.y = this.coordinates.y
@@ -43,7 +55,7 @@ export class Player extends Entity {
     }
 
 
-    calculateMove(game) {
+    calculateMove(game: { msPerFrame: number; gameObjects: any }) {
         const dt = game.msPerFrame / 1000
 
         //Calculate hypotetical movements
@@ -105,7 +117,7 @@ export class Player extends Entity {
         }
     }
 
-    draw(game) {
+    draw(game: this) {
         super.draw(game)
         if (this.attacking > 0) {
             this.weapon.draw(game)

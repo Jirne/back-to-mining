@@ -1,5 +1,16 @@
 export class Game {
-  constructor(widthResolution, fps, tilesize, assets) {
+
+  static context: Map<string, CanvasRenderingContext2D>
+
+  width: number
+  height: number
+  fps: number
+  tilesize: number
+  msPerFrame: number
+  msPrev: number
+  assets: Array<HTMLImageElement>
+
+  constructor(widthResolution: number, fps: number, tilesize: number, assets: any[], arrayCanvas: { name: string; zIndex: number }[]) {
     this.width = widthResolution
     this.height = widthResolution * 9 / 16
     this.fps = fps
@@ -8,10 +19,21 @@ export class Game {
     this.msPrev = window.performance.now()
     this.assets = []
 
-    const arrayCanvas = Array.prototype.slice.call(document.getElementsByTagName('canvas'))
-    arrayCanvas.forEach(canvas => {
-      canvas.width = this.width
-      canvas.height = this.height
+
+    arrayCanvas.forEach((canvas: { name: string; zIndex: number }) => {
+      let newCanvas = document.createElement('canvas')
+      newCanvas.width = this.width
+      newCanvas.height = this.height
+      newCanvas.id = canvas.name
+      newCanvas.style.zIndex = canvas.zIndex.toString()
+      const context = newCanvas.getContext('2D');
+
+      if (!context || !(context instanceof CanvasRenderingContext2D)) {
+        throw new Error('Failed to get 2D context');
+      }
+      Game.context.set(canvas.name, context)
+
+      document.getElementsByTagName("body")[0].appendChild(newCanvas);
     });
 
     const assetsLoaded = assets.map(url =>
@@ -31,7 +53,7 @@ export class Game {
     Promise
       .all(assetsLoaded)
       .then(() => { this.init() })
-      .then(() => { this.init(window.requestAnimationFrame(() => this.frameUpdate())) })
+      .then(() => { window.requestAnimationFrame(() => this.frameUpdate()) })
       .catch(err => console.error(err));
   }
 
@@ -50,7 +72,6 @@ export class Game {
   }
 
   main() {
-    //A override dans une fonction main d'une classe "non reusable"
   }
 
   init() {
