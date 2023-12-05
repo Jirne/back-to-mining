@@ -1,10 +1,11 @@
-import Entity from "/back-to-mining/reusable/Entity.js"
-import Game from "/back-to-mining/reusable/Game.js"
-import Tile from "/back-to-mining/reusable/Tile.js"
-import Camera from "/back-to-mining/reusable/Camera.js"
+import Entity from "../reusable/Entity.js"
+import Game from "../reusable/Game.js"
+import Tile from "../reusable/Tile.js"
+import Camera from "../reusable/Camera.js";
 
-import Player from "/back-to-mining/classes/Player.js"
-import Mineral from "/back-to-mining/classes/Mineral.js"
+import Player from "../classes/Player.js"
+import Mineral from "../classes/Mineral.js"
+
 
 export default class MyGame extends Game {
 
@@ -55,16 +56,15 @@ export default class MyGame extends Game {
             });
         }
 
-
-        this.gameObjects.forEach(element => {
-            if (updateBackground) {
-                bc.clearRect(0, 0, c.canvas.width, c.canvas.height)
+        
+        if (updateBackground) {
+            bc.clearRect(0, 0, c.canvas.width, c.canvas.height)
+            this.gameObjects.forEach(element => {
                 element.draw(this)
-            }
-            else if(element.constructor.name){
-                element.update(this)
-            }
-        });
+            })
+        }
+
+        
         this.player.draw(this)
     }
 
@@ -76,7 +76,7 @@ export default class MyGame extends Game {
                 y: this.height - (this.tilesize * 2 * 1.5 + this.tilesize) - 50,
                 w: this.tilesize * 2,
                 h: this.tilesize * 2 * 1.5,
-                vx:0,
+                vx: 0,
                 vy: 0
             },
             orientation: Player.Direction.DOWN,
