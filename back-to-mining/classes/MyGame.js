@@ -1,9 +1,9 @@
-import Entity from "../reusable/Entity.js"
-import Game from "../reusable/Game.js"
-import Tile from "../reusable/Tile.js"
-import Camera from "../reusable/Camera.js"
+import Entity from "/back-to-mining/reusable/Entity.js"
+import Game from "/back-to-mining/reusable/Game.js"
+import Tile from "/back-to-mining/reusable/Tile.js"
+import Camera from "/back-to-mining/reusable/Camera.js"
 
-import Player from "./Player.js"
+import Player from "/back-to-mining/classes/Player.js"
 
 export default class MyGame extends Game {
 
@@ -163,6 +163,21 @@ export default class MyGame extends Game {
                 }
             }
         }
+
+        window.addEventListener("mousedown", (e) =>{
+            switch(e.button){
+                //leftclic
+                case 0:
+                    this.player.attack()
+                break;
+
+                case 2:
+                break;
+            }
+
+
+
+        })
 
         window.addEventListener("keydown", (e) => {
             switch (e.key) {
