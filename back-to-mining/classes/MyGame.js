@@ -1,13 +1,13 @@
-import Entity from "../reusable/Entity.js"
-import Game from "../reusable/Game.js"
-import Tile from "../reusable/Tile.js"
-import Camera from "../reusable/Camera.js";
+import { Entity } from "../reusable/Entity.js"
+import { Game } from "../reusable/Game.js"
+import { Tile } from "../reusable/Tile.js"
+import { Camera } from "../reusable/Camera.js";
 
-import Player from "../classes/Player.js"
-import Mineral from "../classes/Mineral.js"
+import { Player } from "../classes/Player.js"
+import { Mineral } from "../classes/Mineral.js"
 
 
-export default class MyGame extends Game {
+export class MyGame extends Game {
 
     constructor(widthResolution, fps, tilesize, assets) {
         super(widthResolution, fps, tilesize, assets)
@@ -56,7 +56,7 @@ export default class MyGame extends Game {
             });
         }
 
-        
+
         if (updateBackground) {
             bc.clearRect(0, 0, c.canvas.width, c.canvas.height)
             this.gameObjects.forEach(element => {
@@ -64,7 +64,7 @@ export default class MyGame extends Game {
             })
         }
 
-        
+
         this.player.draw(this)
     }
 

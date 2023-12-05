@@ -1,4 +1,4 @@
-export default class Game {
+export class Game {
   constructor(widthResolution, fps, tilesize, assets) {
     this.width = widthResolution
     this.height = widthResolution * 9 / 16

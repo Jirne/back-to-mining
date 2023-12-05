@@ -1,6 +1,6 @@
-import Entity from "../reusable/Entity.js"
+import {Entity} from "../reusable/Entity.js"
 
-export default class Mineral extends Entity {
+export class Mineral extends Entity {
 
     static Type = Object.freeze({
         COPPER: {
