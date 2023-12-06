@@ -1,4 +1,4 @@
-import { MyGame } from "./classes/MyGame.js"
+import { MyGame } from "./classes/MyGame.ts"
 
 const myGame = new MyGame(1280, 60, 16, [
     '/back-to-mining/assets/TileSet.png'

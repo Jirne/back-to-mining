@@ -1,10 +1,10 @@
-import { Entity } from "../reusable/Entity.js"
+import { Entity } from "../reusable/Entity.ts"
 import { Game } from "../reusable/Game.ts"
-import { Tile } from "../reusable/Tile.js"
-import { Camera } from "../reusable/Camera.js";
+import { Tile } from "../reusable/Tile.ts"
+import { Camera } from "../reusable/Camera.ts";
 
-import { Player } from "../classes/Player.js"
-import { Mineral } from "../classes/Mineral.js"
+import { Player } from "./Player.ts"
+import { Mineral } from "./Mineral.ts"
 
 export class MyGame extends Game {
 

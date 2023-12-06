@@ -1,4 +1,4 @@
-import {Entity} from "../reusable/Entity.js"
+import { Entity } from "../reusable/Entity.ts"
 
 export class Mineral extends Entity {
 
@@ -12,6 +12,10 @@ export class Mineral extends Entity {
             color: '#434341'
         }
     })
+
+    type: { color: any; hp: any }
+    hp
+
 
     constructor({ coordinates, image, backgroundColor, layer, frame, depth }) {
         super({ coordinates: coordinates, orientation: null, image: image, backgroundColor: backgroundColor, layer: layer, frame: null })

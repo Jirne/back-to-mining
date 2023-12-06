@@ -1,4 +1,4 @@
-import { Entity } from "../reusable/Entity.js"
+import { Entity } from "../reusable/Entity.ts"
 
 export class Player extends Entity {
 

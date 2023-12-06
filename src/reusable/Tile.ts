@@ -1,5 +1,5 @@
-import { Entity } from "./Entity.js";
-import { Game } from "./Game.js";
+import { Entity } from "./Entity.ts";
+import { Game } from "./Game.ts";
 
 export class Tile extends Entity {
 
