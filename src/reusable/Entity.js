@@ -1,3 +1,5 @@
+import Game from "./Game.js"
+
 export default class Entity {
 
     static Direction = Object.freeze({
@@ -30,7 +32,7 @@ export default class Entity {
         if (image != null) {
             this.image = image
         }
-        else{
+        else {
             let img = new Image
             img.style.backgroundColor = backgroundColor
             this.image = img
@@ -38,18 +40,17 @@ export default class Entity {
     }
 
 
-    draw() {
-        this.update()
-        const c = document.getElementById(this.layer).getContext("2d")
+    draw(game) {
+        const c = game.context.get(this.layer)
         if (this.image.src == "") {
             c.fillStyle = this.image.style.backgroundColor
             c.fillRect(this.coordinates.x, this.coordinates.y, this.coordinates.w, this.coordinates.h)
         }
         else {
-                if (this.frame == null)
-                    c.drawImage(this.image, this.coordinates.x, this.coordinates.y)
-                else
-                    c.drawImage(this.image, this.frame*this.coordinates.w, 0, this.coordinates.w, this.coordinates.h, this.coordinates.x, this.coordinates.y, this.coordinates.w, this.coordinates.h)
+            if (this.frame == null)
+                c.drawImage(this.image, this.coordinates.x, this.coordinates.y)
+            else
+                c.drawImage(this.image, this.frame * this.coordinates.w, 0, this.coordinates.w, this.coordinates.h, this.coordinates.x, this.coordinates.y, this.coordinates.w, this.coordinates.h)
         }
     }
 
@@ -71,10 +72,10 @@ export default class Entity {
         if (object1.coordinates.x + object1.coordinates.w > object2.coordinates.x &&
             object1.coordinates.x < object2.coordinates.x + object2.coordinates.w &&
             object1.coordinates.y + object1.coordinates.h > object2.coordinates.y &&
-            object1.coordinates.y < object2.coordinates.y + object2.coordinates.h){
-                return object2
-            }
-            else
-                false
+            object1.coordinates.y < object2.coordinates.y + object2.coordinates.h) {
+            return object2
+        }
+        else
+            false
     }
 }

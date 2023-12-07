@@ -1,9 +1,9 @@
 import Entity from "./Entity.js";
 
-export default class Tile extends Entity{
+export default class Tile extends Entity {
 
-    draw(){
-        super.draw()
+    draw(game) {
+        super.draw(game)
 
         /* const c = document.getElementById(this.layer).getContext("2d")
         c.fillStyle = "black"
