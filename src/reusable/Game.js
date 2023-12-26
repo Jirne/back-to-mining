@@ -38,7 +38,7 @@ export default class Game {
           console.log(`${url} loaded`)
           resolve(img)
         };
-        img.src = '../assets/' + url;
+        img.src = url;
         this.assets.set(url.slice(url.lastIndexOf("/") + 1, url.length - 4), img)
       })
     );
