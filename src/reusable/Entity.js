@@ -1,5 +1,3 @@
-import Game from "./Game.js"
-
 export default class Entity {
 
     static Direction = Object.freeze({
