@@ -12,6 +12,7 @@ export default class Game {
     this.msPrev = window.performance.now()
     this.assets = new Map()
     this.context = new Map()
+    this.mainMenuLocation = 0;
 
     arrayCanvas.forEach(canvas => {
       let newCanvas = document.createElement('canvas')
@@ -47,13 +48,108 @@ export default class Game {
     Promise
       .all(assetsLoaded)
       .then(() => {
-        this.init()
-      })
-      .then(() => {
-        window.requestAnimationFrame(() => this.frameUpdate())
+        this.loadMainMenu()
       })
       .catch(err => console.error(err));
   }
+
+  loadMainMenu() {
+    const ctx = this.context.get("playground")
+    var height_menu = 0;
+    var width_menu = 0
+
+
+    ctx.font = "48px serif";
+
+    const textsToPrint = ["OPTIONS", "LOAD", "NEW"]
+
+    var actualHeight = 0
+    for (let index = 0; index < textsToPrint.length; index++) {
+      var text = textsToPrint[index]
+      var textMetrics = ctx.measureText(text);
+      actualHeight = (textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent) * 2.5;
+      height_menu += actualHeight
+
+      var actualWidth = textMetrics.actualBoundingBoxLeft + textMetrics.actualBoundingBoxRight;
+      if (actualWidth > width_menu)
+        width_menu = actualWidth
+
+      ctx.fillText(text, (this.width - actualWidth) / 2, this.height - actualHeight * index - actualHeight);
+    }
+    height_menu += actualHeight / 2
+
+    var yoffset = this.height - actualHeight * textsToPrint.length - actualHeight / 2.5
+
+    this.drawLeftMenuArrow(yoffset, actualHeight / 2.5, actualWidth, this.mainMenuLocation, width_menu)
+    this.drawRightMenuArrow(yoffset, actualHeight / 2.5, actualWidth, this.mainMenuLocation, width_menu)
+
+    ctx.strokeRect((this.width - width_menu) / 2 - actualHeight, this.height - height_menu - actualHeight / 2, width_menu + 2 * actualHeight, height_menu)
+
+    window.addEventListener("keydown", (e) => {
+      switch (e.key) {
+        case "z":
+          if (this.mainMenuLocation > 0) {
+            this.mainMenuLocation--
+            this.updateMenu();
+          }
+          break
+
+        case "s":
+          if (this.mainMenuLocation < 2) {
+            this.mainMenuLocation++
+            this.updateMenu();
+          }
+          break
+
+        case "Enter":
+          if (this.mainMenuLocation == 0) {
+            const ctx = this.context.get("UI")
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+
+            this.init()
+            window.requestAnimationFrame(() => this.frameUpdate())
+          }
+          break
+      }
+    })
+  }
+
+  updateMenu() {
+
+  }
+
+  drawLeftMenuArrow(yoffset, arrowHeight, delta, index, maxFontWidth) {
+    const ctx = this.context.get("UI")
+
+    var xoffset = (this.width - maxFontWidth) / 2 - arrowHeight - 20
+    yoffset += index * delta
+
+    ctx.beginPath()
+    ctx.moveTo(xoffset, yoffset)
+    ctx.lineTo(xoffset, yoffset + arrowHeight)
+    ctx.lineTo(xoffset + arrowHeight * Math.cos(Math.PI / 6), yoffset + arrowHeight - arrowHeight * Math.sin(Math.PI / 6))
+    ctx.closePath()
+
+    ctx.fill();
+
+  }
+
+  drawRightMenuArrow(yoffset, arrowHeight, delta, index, maxFontWidth) {
+    const ctx = this.context.get("UI")
+
+    var xoffset = (this.width + maxFontWidth) / 2 + arrowHeight + 20
+    yoffset += index * delta
+
+    ctx.beginPath()
+    ctx.moveTo(xoffset, yoffset)
+    ctx.lineTo(xoffset, yoffset + arrowHeight)
+    ctx.lineTo(xoffset - arrowHeight * Math.cos(Math.PI / 6), yoffset + arrowHeight - arrowHeight * Math.sin(Math.PI / 6))
+    ctx.closePath()
+
+    ctx.fill();
+  }
+
 
   frameUpdate() {
     window.requestAnimationFrame(() => this.frameUpdate())
