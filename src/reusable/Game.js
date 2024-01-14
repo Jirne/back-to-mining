@@ -2,6 +2,8 @@ export default class Game {
   static contexts
   static msPerFrame
   static defaultTileSize
+  static width
+  static height
 
   constructor(widthResolution, fps, arrayCanvas, defaultTileSize) {
     this.width = widthResolution

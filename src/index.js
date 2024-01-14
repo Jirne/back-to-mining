@@ -7,5 +7,5 @@ const myGame = new Game(1280, 60, [
     { "name": "UI", "zIndex": 2 }
 ], 16)
 
-myGame.scenes.set(0, new MainMenu(Game.defaultTileSize))
+myGame.scenes.set(0, new MainMenu(Game.defaultTileSize, null))
 myGame.loadScene(0)
