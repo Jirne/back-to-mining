@@ -1,3 +1,5 @@
+import Game from "./Game.js"
+
 export default class Entity {
 
     static Direction = Object.freeze({
@@ -38,8 +40,8 @@ export default class Entity {
     }
 
 
-    draw(game) {
-        const c = game.context.get(this.layer)
+    draw() {
+        const c = Game.contexts.get(this.layer)
         if (this.image.src == "") {
             c.fillStyle = this.image.style.backgroundColor
             c.fillRect(this.coordinates.x, this.coordinates.y, this.coordinates.w, this.coordinates.h)

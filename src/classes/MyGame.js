@@ -1,16 +1,16 @@
-import Entity from "../reusable/Entity.js"
-import Game from "../reusable/Game.js"
-import Tile from "../reusable/Tile.js"
-import Camera from "../reusable/Camera.js"
+import Camera from "../reusable/Camera.js";
+import Entity from "../reusable/Entity.js";
+import Game from "../reusable/Game.js";
+import Scene from "../reusable/Scene.js";
+import Tile from "../reusable/Tile.js";
+import Player from "./Player.js";
 
-import Player from "./Player.js"
-
-export class MyGame extends Game {
+export default class MyGame extends Scene {
 
     static player
 
-    constructor(widthResolution, fps, tilesize, assets, arrayCanvas) {
-        super(widthResolution, fps, tilesize, assets, arrayCanvas)
+    constructor(tilesize, assetsToLoad) {
+        super(tilesize, assetsToLoad)
 
         this.colliders = []
         this.minerals = []
@@ -18,8 +18,8 @@ export class MyGame extends Game {
 
         this.player = new Player({
             coordinates: {
-                x: this.width / 6 + 5,
-                y: this.height - (this.tilesize * 2 * 1.5 + this.tilesize) - 50,
+                x: Game.width / 6 + 5,
+                y: Game.height - (this.tilesize * 2 * 1.5 + this.tilesize) - 50,
                 w: this.tilesize * 2,
                 h: this.tilesize * 2 * 1.5
             },
@@ -37,10 +37,10 @@ export class MyGame extends Game {
 
         this.camera = new Camera({
             coordinates: {
-                x: this.width / 6,
-                y: this.height / 2,
-                w: this.width / 6,
-                h: this.height / 2
+                x: Game.width / 6,
+                y: Game.height / 2,
+                w: Game.width / 6,
+                h: Game.height / 2
             }
         })
 
@@ -91,71 +91,9 @@ export class MyGame extends Game {
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
         ]
-
     }
-
-    main() {
-        const c = this.context.get("playground")
-        const bc = this.context.get("background")
-
-        let updateBackground = false;
-
-        c.clearRect(0, 0, c.canvas.width, c.canvas.height)
-
-        const movement = this.player.calculateMove(this)
-        this.player.coordinates.vy += movement.vy
-        this.player.coordinates.vx += movement.vx
-
-        if (this.camera.isPlayerInside({
-            x: this.player.coordinates.x + movement.x,
-            y: this.player.coordinates.y,
-            w: this.player.coordinates.w,
-            h: this.player.coordinates.h
-        })) {
-            this.player.coordinates.x += movement.x
-        }
-        else {
-            updateBackground = true
-            this.colliders.forEach(element => {
-                element.coordinates.x = Math.round(element.coordinates.x - movement.x)
-                element.draw(this)
-            });
-        }
-
-
-        if (this.camera.isPlayerInside({
-            x: this.player.coordinates.x,
-            y: this.player.coordinates.y + movement.y,
-            w: this.player.coordinates.w,
-            h: this.player.coordinates.h
-        })) {
-            this.player.coordinates.y += movement.y
-        }
-        else {
-            updateBackground = true
-            this.colliders.forEach(element => {
-                element.coordinates.y -= movement.y
-            });
-        }
-
-
-        if (updateBackground) {
-            bc.clearRect(0, 0, c.canvas.width, c.canvas.height)
-            this.colliders.forEach(element => {
-                element.draw(this)
-            });
-        }
-
-        this.player.draw(this)
-    }
-
 
     init() {
-
-        //Il faudra mettre a jour les sprites quand il y en aura
-
-
-
         for (let i = 0; i < this.map.length; i++) {
             for (let j = 0; j < this.map[i].length; j++) {
                 const tile = this.map[i][j];
@@ -174,7 +112,7 @@ export class MyGame extends Game {
                         backgroundColor: null,
                         frame: tile
                     }))
-                    this.colliders[this.colliders.length - 1].draw(this);
+                    this.colliders[this.colliders.length - 1].draw();
                 }
             }
         }
@@ -227,5 +165,61 @@ export class MyGame extends Game {
                     break
             }
         })
+
+    }
+
+    main() {
+        const c = Game.contexts.get("playground")
+        const bc = Game.contexts.get("background")
+
+        let updateBackground = false;
+
+        c.clearRect(0, 0, c.canvas.width, c.canvas.height)
+
+        const movement = this.player.calculateMove(this.colliders)
+        this.player.coordinates.vy += movement.vy
+        this.player.coordinates.vx += movement.vx
+
+        if (this.camera.isPlayerInside({
+            x: this.player.coordinates.x + movement.x,
+            y: this.player.coordinates.y,
+            w: this.player.coordinates.w,
+            h: this.player.coordinates.h
+        })) {
+            this.player.coordinates.x += movement.x
+        }
+        else {
+            updateBackground = true
+            this.colliders.forEach(element => {
+                element.coordinates.x = Math.round(element.coordinates.x - movement.x)
+                element.draw()
+            });
+        }
+
+
+        if (this.camera.isPlayerInside({
+            x: this.player.coordinates.x,
+            y: this.player.coordinates.y + movement.y,
+            w: this.player.coordinates.w,
+            h: this.player.coordinates.h
+        })) {
+            this.player.coordinates.y += movement.y
+        }
+        else {
+            updateBackground = true
+            this.colliders.forEach(element => {
+                element.coordinates.y -= movement.y
+            });
+        }
+
+
+        if (updateBackground) {
+            bc.clearRect(0, 0, c.canvas.width, c.canvas.height)
+            this.colliders.forEach(element => {
+                element.draw()
+            });
+        }
+
+        this.player.draw()
     }
 }
