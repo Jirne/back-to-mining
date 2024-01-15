@@ -1,6 +1,7 @@
 import Game from "./Game.js"
 
 export default class Scene {
+    static contexts
 
     constructor(tilesize, assetsToLoad) {
         this.tilesize = tilesize
@@ -25,6 +26,10 @@ export default class Scene {
 
 
     load() {
+        Game.contexts.forEach(e => {
+            e.clearRect(0, 0, e.canvas.width, e.canvas.height)
+        });
+
         if (this.assetsToLoad != null) {
             const assetsLoaded = this.assetsToLoad.map(url =>
                 new Promise(resolve => {
@@ -47,7 +52,7 @@ export default class Scene {
         }
         else {
             this.init()
-            this.main()
+            this.frameUpdate()
         }
     }
 

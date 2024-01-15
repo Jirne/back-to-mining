@@ -1,11 +1,13 @@
 export default class Game {
   static contexts
   static msPerFrame
+  static fps
   static defaultTileSize
   static width
   static height
+  static scenes = new Map()
 
-  constructor(widthResolution, fps, arrayCanvas, defaultTileSize) {
+  static init(widthResolution, fps, arrayCanvas, defaultTileSize) {
     this.width = widthResolution
     this.height = widthResolution * 9 / 16
     this.fps = fps
@@ -21,20 +23,19 @@ export default class Game {
       newCanvas.height = this.height
       newCanvas.id = canvas.name
       newCanvas.style.zIndex = canvas.zIndex.toString()
-      let context = newCanvas.getContext('2d');
+      let context = newCanvas.getContext('2d')
 
       if (!context || !(context instanceof CanvasRenderingContext2D)) {
-        throw new Error('Failed to get 2D context');
+        throw new Error('Failed to get 2D context')
       }
 
       this.contexts.set(canvas.name, context)
 
-      document.getElementsByTagName("body")[0].appendChild(newCanvas);
-    });
+      document.getElementsByTagName("body")[0].appendChild(newCanvas)
+    })
   }
 
-
-  loadScene(index) {
+  static loadScene(index) {
     this.scenes.get(index).load()
   }
 }

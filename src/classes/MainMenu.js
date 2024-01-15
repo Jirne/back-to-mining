@@ -58,12 +58,7 @@ export default class MainMenu extends Scene {
 
                 case "Enter":
                     if (this.mainMenuLocation == 0) {
-                        const ctx = Game.contexts.get("UI")
-                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-
-
-                        this.init()
-                        window.requestAnimationFrame(() => this.frameUpdate())
+                        Game.loadScene("Game")
                     }
                     break
             }

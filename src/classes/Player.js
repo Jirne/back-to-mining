@@ -1,4 +1,5 @@
 import Entity from "../reusable/Entity.js"
+import Game from "../reusable/Game.js"
 
 export default class Player extends Entity {
 
@@ -31,7 +32,7 @@ export default class Player extends Entity {
     }
 
 
-    update(game) {
+    update() {
         if (this.attacking > 0) {
             this.attacking--
             this.weapon.coordinates.y = this.coordinates.y
@@ -45,8 +46,8 @@ export default class Player extends Entity {
     }
 
 
-    calculateMove(game) {
-        const dt = game.msPerFrame / 1000
+    calculateMove(colliders) {
+        const dt = Game.msPerFrame / 1000
 
         //Calculate hypotetical movements
         const dx = this.coordinates.vx * dt
@@ -67,7 +68,7 @@ export default class Player extends Entity {
                 w: this.coordinates.w,
                 h: this.coordinates.h
             }
-        }, game.colliders)
+        }, colliders)
 
 
         if (collided != false) {
@@ -87,7 +88,7 @@ export default class Player extends Entity {
                 w: this.coordinates.w,
                 h: this.coordinates.h
             }
-        }, game.colliders)
+        }, colliders)
         if (collided != false) {
             movement.vy = 0
             this.coordinates.vy = 0
@@ -107,11 +108,11 @@ export default class Player extends Entity {
         }
     }
 
-    draw(game) {
-        this.update(game)
-        super.draw(game)
+    draw() {
+        this.update()
+        super.draw()
         if (this.attacking > 0) {
-            this.weapon.draw(game)
+            this.weapon.draw()
         }
     }
 }
