@@ -3,13 +3,15 @@ import Scene from "../reusable/Scene.js"
 
 export default class MainMenu extends Scene {
 
+    static MENU_SPEED = 3
+
     constructor(tilesize, assetsToLoad) {
         super(tilesize, assetsToLoad)
         this.mainMenuLocation = 0
         this.menuHeights = [0, 0, 0]
         this.arrowLocation = 0
         this.arrowHeight = 0
-        this.
+        this.arrowXPosition = 0
     }
 
     init() {
@@ -33,10 +35,14 @@ export default class MainMenu extends Scene {
             ctx.fillText(text, (Game.width - actualWidth) / 2, Game.height - 2 * (textsToPrint.length + 1) * actualHeight + 2 * actualHeight * (1 + index))
             this.menuHeights[index] = Game.height - 2 * (textsToPrint.length + 1) * actualHeight + 2 * actualHeight * (1 + index)
         }
+        this.arrowXPosition = width_menu
+        this.arrowHeight = actualHeight
         width_menu += 2 * actualHeight
 
-        this.drawLeftMenuArrow(this.menuHeights[this.mainMenuLocation], actualHeight, actualWidth)
-        this.drawRightMenuArrow(this.menuHeights[this.mainMenuLocation], actualHeight, actualWidth)
+
+
+        this.drawLeftMenuArrow(this.menuHeights[this.mainMenuLocation], actualHeight)
+        this.drawRightMenuArrow(this.menuHeights[this.mainMenuLocation], actualHeight)
         this.arrowLocation = this.menuHeights[this.mainMenuLocation]
 
         ctx.strokeRect((Game.width - width_menu) / 2 - actualHeight, Game.height - 8 * actualHeight, width_menu + 2 * actualHeight, 7 * actualHeight)
@@ -65,18 +71,30 @@ export default class MainMenu extends Scene {
     }
 
     main() {
-        console.log(this.arrowLocation + ';' + this.menuHeights[this.mainMenuLocation])
+        const ctx = Game.contexts.get("UI")
+        console.log(this.arrowLocation + ";" + this.menuHeights[this.mainMenuLocation])
+
         if (this.arrowLocation < this.menuHeights[this.mainMenuLocation]) {
-            this.arrowLocation++
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+            this.arrowLocation += MainMenu.MENU_SPEED
+            this.drawLeftMenuArrow(this.arrowLocation, this.arrowHeight)
+            this.drawRightMenuArrow(this.arrowLocation, this.arrowHeight)
+        }
+
+        if (this.arrowLocation > this.menuHeights[this.mainMenuLocation]) {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+            this.arrowLocation -= MainMenu.MENU_SPEED
+            this.drawLeftMenuArrow(this.arrowLocation, this.arrowHeight)
+            this.drawRightMenuArrow(this.arrowLocation, this.arrowHeight)
         }
 
     }
 
 
-    drawLeftMenuArrow(yoffset, arrowHeight, maxFontWidth) {
+    drawLeftMenuArrow(yoffset, arrowHeight) {
         const ctx = Game.contexts.get("UI")
 
-        var xoffset = (Game.width - maxFontWidth) / 2 - arrowHeight - 20
+        var xoffset = (Game.width - this.arrowXPosition) / 2 - arrowHeight - 20
 
         ctx.beginPath()
         ctx.moveTo(xoffset, yoffset)
@@ -87,10 +105,10 @@ export default class MainMenu extends Scene {
         ctx.fill()
     }
 
-    drawRightMenuArrow(yoffset, arrowHeight, maxFontWidth) {
+    drawRightMenuArrow(yoffset, arrowHeight) {
         const ctx = Game.contexts.get("UI")
 
-        var xoffset = (Game.width + maxFontWidth) / 2 + arrowHeight + 20
+        var xoffset = (Game.width + this.arrowXPosition) / 2 + arrowHeight + 20
 
         ctx.beginPath()
         ctx.moveTo(xoffset, yoffset)
