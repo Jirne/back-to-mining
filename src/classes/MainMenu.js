@@ -72,8 +72,6 @@ export default class MainMenu extends Scene {
 
     main() {
         const ctx = Game.contexts.get("UI")
-        console.log(this.arrowLocation + ";" + this.menuHeights[this.mainMenuLocation])
-
         if (this.arrowLocation < this.menuHeights[this.mainMenuLocation]) {
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
             this.arrowLocation += MainMenu.MENU_SPEED
