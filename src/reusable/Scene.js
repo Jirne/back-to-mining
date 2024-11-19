@@ -7,10 +7,13 @@ export default class Scene {
         this.tilesize = tilesize
 
         this.assetsToLoad = assetsToLoad
+        this.loaded = false;
         this.assets = new Map()
     }
 
     frameUpdate() {
+        if (!this.loaded)
+            return;
         window.requestAnimationFrame(() => this.frameUpdate())
 
         this.main()
@@ -30,6 +33,9 @@ export default class Scene {
             e.clearRect(0, 0, e.canvas.width, e.canvas.height)
         });
 
+        //Un peu bourrin, on uload toutes les scenes
+        Game.scenes.forEach(scene => scene.unload())
+
         if (this.assetsToLoad != null) {
             const assetsLoaded = this.assetsToLoad.map(url =>
                 new Promise(resolve => {
@@ -46,14 +52,20 @@ export default class Scene {
 
             Promise
                 .all(assetsLoaded)
+                .then(() => this.loaded = true)
                 .then(() => this.init())
                 .then(() => this.frameUpdate())
                 .catch(err => console.error(err))
         }
         else {
+            this.loaded = true
             this.init()
             this.frameUpdate()
         }
+    }
+
+    unload() {
+        this.loaded = false
     }
 
 
